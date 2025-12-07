@@ -1,0 +1,21 @@
+<phpunit
+        bootstrap="tests/bootstrap.php"
+        colors="true"
+        failOnRisky="true"
+        failOnWarning="true"
+        beStrictAboutTestsThatDoNotTestAnything="true"
+        displayDetailsOnPhpunitDeprecations="true">
+
+    <testsuites>
+        <testsuite name="NixPHP Schedule Plugin Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <env name="APP_ENV" value="testing" force="true" />
+        <ini name="error_reporting" value="-1" />
+        <ini name="display_errors" value="1" />
+        <const name="PHPUNIT_RUNNING" value="true"/>
+    </php>
+</phpunit>
