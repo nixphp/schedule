@@ -8,12 +8,14 @@ use DateTimeImmutable;
 use NixPHP\CLI\Core\Output;
 use NixPHP\Queue\Core\Queue;
 use NixPHP\Schedule\Support\CronParser;
+use Psr\Container\ContainerInterface;
 use function NixPHP\app;
 
 class Scheduler
 {
     private string $stateFile;
     private array $lastRun = [];
+    private int $jobsQueued = 0;
 
     public function __construct(
         private readonly Queue         $queue,
@@ -30,7 +32,7 @@ class Scheduler
         $this->jobs->add($scheduledJob, $payload);
     }
 
-    public function tick(Output $output): void
+    public function tick(Output $output): int
     {
         $now = new DateTimeImmutable();
 
@@ -57,16 +59,20 @@ class Scheduler
             $this->lastRun[$jobKey] = $currentMinute;
             $this->saveState();
 
-            echo "Pushing job: {$jobClass} at {$currentMinute}\n";
+            echo "Scheduler: Pushing job: {$jobClass} at {$currentMinute}\n";
 
             $this->queue->push(get_class($jobInstance), $payload);
+
+            $this->jobsQueued++;
         }
+
+        return $this->jobsQueued;
     }
 
     private function loadState(): void
     {
         if (file_exists($this->stateFile)) {
-            $data = file_get_contents($this->stateFile);
+            $data          = file_get_contents($this->stateFile);
             $this->lastRun = json_decode($data, true) ?? [];
         }
     }
