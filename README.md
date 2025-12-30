@@ -29,7 +29,6 @@ It is designed to work seamlessly with the NixPHP Queue plugin, without introduc
 * Queue-backed execution (no direct execution in the ticker)
 * **Automatic backlog prevention** (latest run wins)
 * Persistent scheduler state (prevents duplicate runs)
-* Works with any queue driver
 * No marker interfaces, no job annotations
 * Fully deterministic and testable
 
