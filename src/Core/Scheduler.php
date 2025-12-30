@@ -8,8 +8,8 @@ use DateTimeImmutable;
 use NixPHP\CLI\Core\Output;
 use NixPHP\Queue\Core\Queue;
 use NixPHP\Schedule\Support\CronParser;
-use Psr\Container\ContainerInterface;
 use function NixPHP\app;
+use function NixPHP\config;
 
 class Scheduler
 {
@@ -59,9 +59,18 @@ class Scheduler
             $this->lastRun[$jobKey] = $currentMinute;
             $this->saveState();
 
-            echo "Scheduler: Pushing job: {$jobClass} at {$currentMinute}\n";
+            $output->writeLine("Scheduler: Pushing job: {$jobClass} at {$currentMinute}");
 
-            $this->queue->push(get_class($jobInstance), $payload);
+            $jobPayload = $payload;
+            $coalesce   = config('schedule:queue:coalesce', true);
+
+            if ($coalesce) {
+                $jobPayload['_job_id'] = sha1('schedule:' . $jobKey);
+            }
+
+            $jobClassName = get_class($jobInstance);
+
+            $this->queue->push($jobClassName, $jobPayload);
 
             $this->jobsQueued++;
         }

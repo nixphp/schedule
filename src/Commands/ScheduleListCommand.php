@@ -30,7 +30,7 @@ final class ScheduleListCommand extends AbstractCommand
         $this->setTitle('NixPHP Schedule')
             ->setDescription('List scheduled jobs and their next run time.')
             ->addOption('from', null, true)
-            ->addOption('no-sort', null, false);
+            ->addOption('no-sort', null);
     }
 
     public function run(Input $input, Output $output): int
