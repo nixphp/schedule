@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 use NixPHP\Core\Container;
 use NixPHP\Queue\Core\Queue;
-use NixPHP\Schedule\Commands\ScheduleWorkerCommand;
+use NixPHP\Schedule\Commands\ScheduleListCommand;
+use NixPHP\Schedule\Commands\ScheduleTickerCommand;
 use NixPHP\Schedule\Core\Scheduler;
 use NixPHP\Schedule\Core\JobRepository;
 use NixPHP\Schedule\Support\CronParser;
@@ -22,4 +23,5 @@ app()->container()->set(Scheduler::class, function(Container $container) {
     return new Scheduler($queue, $taskRepository, $cronParser);
 });
 
-command()->add(ScheduleWorkerCommand::class);
+command()->add(ScheduleTickerCommand::class);
+command()->add(ScheduleListCommand::class);
