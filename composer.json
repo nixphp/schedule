@@ -1,6 +1,6 @@
 {
   "name": "nixphp/schedule",
-  "description": "NixPHP schedule Plugin for recurring Tasks.",
+  "description": "NixPHP Schedule Plugin for recurring Tasks.",
   "minimum-stability": "stable",
   "license": "MIT",
   "type": "nixphp-plugin",
@@ -23,7 +23,6 @@
   },
   "require": {
     "php": ">=8.3",
-    "ext-pdo": "*",
     "nixphp/framework": "^0.1.0",
     "nixphp/queue": "^0.1.0"
   },
